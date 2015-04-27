@@ -44,7 +44,8 @@ class CropCoordinatesType extends AbstractType
             $options['instances'] = array(array());
         }
 
-        for ($i = 0; $i < count($options['instances']); $i++) {
+        $instances_count = count($options['instances']);
+        for ($i = 0; $i < $instances_count; $i++) {
             $this->addChildForm($builder, $i, $this->prepareChildOptions($options, $i));
         }
     }
