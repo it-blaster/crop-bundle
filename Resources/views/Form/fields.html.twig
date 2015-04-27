@@ -1,0 +1,62 @@
+{% block croppable_row %}
+    {{ form_row(form.image) }}
+
+    {% if form.vars.validate %}
+        <p class="text-muted">
+            {{ 'croppable.size.minimums.hint' | trans({
+                '%width%':  form.vars.minimums.width,
+                '%height%': form.vars.minimums.height
+            }, translation_domain) }}
+        </p>
+    {% endif %}
+
+    {{ form_row(form.coordinates, {
+        image:             form.image.vars.value.file,
+        max_canvas_width:  max_canvas_width,
+        max_canvas_height: max_canvas_height
+    }) }}
+{% endblock %}
+
+{% block crop_coordinates_row %}
+    {% set image_showable = image is not empty and attribute(image, 'getClientOriginalName') is not defined %}
+
+    {% if image_showable %}
+        {% set size = image_size(image) %}
+
+        {% set canvas_width  = max_canvas_width %}
+        {% set canvas_height = max_canvas_height %}
+
+        {% if max_canvas_width %}
+            {% if size[0] < max_canvas_width %}
+                {% set canvas_width = size[0] %}
+            {% endif %}
+
+            {% set canvas_height = (canvas_width * size[1] / size[0]) | round %}
+        {% endif %}
+
+        {% if max_canvas_height %}
+            {% if canvas_height > max_canvas_height %}
+                {% set canvas_width  = (max_canvas_height * canvas_width / canvas_height) | round %}
+                {% set canvas_height = max_canvas_height %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+    {% for child in form %}
+        <div class="form-group fenrizbes-crop-bundle-instance">
+            {% if image_showable %}
+                {{ form_label(child) }}
+
+                <div style="width: {{ canvas_width ? canvas_width ~'px' : 'auto' }}; height: {{ canvas_height ? canvas_height ~'px' : 'auto' }};">
+                    <img
+                        src="{{ asset(image.webPath) }}"
+                        data-min-width="{{ child.vars.value.min_width }}"
+                        data-min-height="{{ child.vars.value.min_height }}"
+                        />
+                </div>
+            {% endif %}
+
+            {{ form_widget(child) }}
+        </div>
+    {% endfor %}
+{% endblock %}

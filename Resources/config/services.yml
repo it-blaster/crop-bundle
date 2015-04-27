@@ -1,0 +1,22 @@
+services:
+    fenrizbes_crop.form.type.croppable:
+        class: Fenrizbes\CropBundle\Form\Type\CroppableType
+        tags:
+            - { name: form.type, alias: croppable }
+
+    fenrizbes_crop.form.type.crop_coordinates:
+        class: Fenrizbes\CropBundle\Form\Type\CropCoordinatesType
+        tags:
+            - { name: form.type, alias: crop_coordinates }
+
+    fenrizbes_crop.form.type.crop_instance:
+        class: Fenrizbes\CropBundle\Form\Type\CropInstanceType
+        tags:
+            - { name: form.type, alias: crop_instance }
+
+    twig.extension.crop:
+        class: Fenrizbes\CropBundle\Twig\CropTwigExtension
+        arguments:
+            - %fenrizbes_uploadable.root_path%
+        tags:
+            - { name: twig.extension }
