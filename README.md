@@ -18,7 +18,7 @@ Add it-blaster/crop-bundle to your `composer.json` file and run `composer`
 ```json
 ...
 "require": {
-    "it-blaster/crop-bundle": "dev-master"
+    "it-blaster/crop-bundle": "1.0.*"
 }
 ...
 ```
